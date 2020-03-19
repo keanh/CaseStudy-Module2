@@ -91,6 +91,7 @@ public class GiaoDien extends JFrame {
             }
         });
     }
+
     public void readFile() throws IOException {
         bufferedReader = new BufferedReader(new FileReader(file));
         String line = "";
@@ -153,6 +154,7 @@ public class GiaoDien extends JFrame {
     }
 
     public boolean search(String input){
+        ApproximatString approximatString = new ApproximatString(wordToTranslate.getText());
         for (Dictionary word: list){
             if (word.getVietnameseWord().equals(wordToTranslate.getText().toLowerCase())){
                 wordTranslated.setText(word.getEnglishWord());
@@ -160,6 +162,12 @@ public class GiaoDien extends JFrame {
             }else if (word.getEnglishWord().equals(wordToTranslate.getText().toLowerCase())){
                 wordTranslated.setText(word.getVietnameseWord());
                 return true;
+            }else{
+               boolean checkEnglishWord = approximatString.SoSanh(word.getEnglishWord());
+               if (checkEnglishWord){
+                   wordTranslated.setText("Có phải ý của bạn là " + word);
+                   return true;
+               }
             }
         }
         return false;
