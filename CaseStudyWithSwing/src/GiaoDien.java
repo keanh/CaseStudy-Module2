@@ -17,7 +17,8 @@ public class GiaoDien extends JFrame {
     private BufferedWriter bufferedWriter;
     private JTextArea wordToTranslate;
     private JTextArea wordTranslated;
-    private JButton wordListButton;
+    private JButton removeTextButton;
+
     ArrayList<Dictionary> list = new ArrayList<>();
     File file = new File(path);
     Dictionary dictionary = new Dictionary();
@@ -25,13 +26,16 @@ public class GiaoDien extends JFrame {
     public GiaoDien (){
         add(rootPanel);
         setTitle("My simple dictionary");
-        setSize(500,250);
+        setSize(700,500);
         translateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
                     readFile();
-                    search(wordToTranslate.getText());
+                    boolean check = search(wordToTranslate.getText());
+                    if (!check){
+                        wordTranslated.setText("Từ cần tìm không tồn tại");
+                    }
                     removeAllWord();
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -79,16 +83,11 @@ public class GiaoDien extends JFrame {
                 }
             }
         });
-        wordListButton.addActionListener(new ActionListener() {
+        removeTextButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    readFile();
-                    getList();
-                    removeAllWord();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+                wordToTranslate.setText("");
+                wordTranslated.setText("");
             }
         });
     }
@@ -129,12 +128,6 @@ public class GiaoDien extends JFrame {
         }return false;
     }
 
-    public void getList(){
-        for (Dictionary dictionary:list){
-            wordToTranslate.setText(String.valueOf(dictionary));
-        }
-    }
-
     public void removeAllWord(){
         list.removeAll(list);
     }
@@ -159,13 +152,17 @@ public class GiaoDien extends JFrame {
         }
     }
 
-    public void search(String input){
+    public boolean search(String input){
         for (Dictionary word: list){
             if (word.getVietnameseWord().equals(wordToTranslate.getText().toLowerCase())){
                 wordTranslated.setText(word.getEnglishWord());
+                return true;
             }else if (word.getEnglishWord().equals(wordToTranslate.getText().toLowerCase())){
                 wordTranslated.setText(word.getVietnameseWord());
+                return true;
             }
         }
+        return false;
     }
+
 }

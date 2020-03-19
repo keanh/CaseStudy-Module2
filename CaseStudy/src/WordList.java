@@ -1,12 +1,11 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
 public class WordList {
     private ArrayList<Dictionary> list ;
-    private String path = "D:\\Module 2\\Case Study\\Data";
+    private String path = "D:\\Module 2\\Case Study\\CaseStudy\\Data";
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     File file = new File(path);
